@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+ {% extends 'core/base.html' %}
 
 {% block title %}{{ room.name }} | {% endblock %}
 
@@ -9,8 +9,22 @@
 
 <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
     <div class="chat-messages space-y-3" id="chat-messages">
-        {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
+        <div class="p-4 bg-gray-200 rounded-xl"
+<p class="font-semibold">Username</p>
+<p>Welcome to Djangochat!</p>
+{% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
     </div>
+    <div class="p-4 bg-gray-200 rounded-xl"
+    <p class="font-semibold">Username</p>
+    <p>This is a community.</p>
+    {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
+        </div>
+        <div class="p-4 bg-gray-200 rounded-xl"
+        <p class="font-semibold">Username</p>
+        <p>Let's start chatting</p>
+        {% for m in messages %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
+            </div>
+</div>
 </div>
 
 <div class="lg:w-2/4 mt-6 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
@@ -39,16 +53,16 @@
         + roomName
         + '/'
     );
-
-    chatSocket.onclose = function(e) {
-        console.log('onclose')
-    }
-
+  
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
 
         if (data.message) {
-            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+           let html= '<div class="p-4 bg-gray-200 rounded-xl">';
+            html+='<p class="font-semibold">'+data.username+'</p>';
+         html+='<p>'+data.message+'</p>';
+        document.querySelector('#chat-messages').innerHtml+=html;
+            
         } else {
             alert('The message was empty!')
         }
@@ -56,6 +70,11 @@
         scrollToBottom();
     };
 
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    
     document.querySelector('#chat-message-input').focus();
     document.querySelector('#chat-message-input').onkeyup = function(e) {
         if (e.keyCode === 13) {
